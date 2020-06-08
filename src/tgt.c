@@ -5,6 +5,7 @@
 #include <gio/gio.h>
 #include <gtk/gtk.h>
 #include <vte/vte.h>
+#include <wait.h>
 
 #define PROJECT_NAME "tgt"
 
