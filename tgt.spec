@@ -1,5 +1,5 @@
 Name: tgt
-Version: v0.5.0
+Version: v0.5.1
 Release: 1%{?dist}
 Summary: A Tiny Gnome Terminal
 License: GPLv3
@@ -21,7 +21,9 @@ Requires: vte291
 %description
 
 %prep
-{{{ git_dir_setup_macro }}}
+%autosetup -c
+mv -- -/* .
+rm -r -- '-'
 
 %build
 %meson
