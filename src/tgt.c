@@ -43,7 +43,6 @@ static vec2_t LOCATIONS[] = {
 typedef struct tiny_term {
     GtkWindow* window;
     VteTerminal* terminal;
-    gboolean did_focus;
     vec2_t location;
     vec2_t size;
     gchar** cmd;
@@ -181,13 +180,7 @@ static gboolean on_focus_out(
     GdkEvent* event G_GNUC_UNUSED,
     gpointer user_data)
 {
-    g_message("focus_out");
     tgt_term_t* term = (tgt_term_t*)user_data;
-    if (!term->did_focus) {
-        term->did_focus = TRUE;
-
-        return TRUE;
-    }
     gtk_widget_destroy(GTK_WIDGET(term->terminal));
 
     return TRUE;
