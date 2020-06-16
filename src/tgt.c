@@ -173,7 +173,12 @@ static void on_child_exited(
     gint status,
     gpointer user_data G_GNUC_UNUSED)
 {
-    exit(WEXITSTATUS(status));
+    gint exit_code = WEXITSTATUS(status);
+    if (!exit_code && !WIFEXITED(status)) {
+        exit_code = -1;
+    }
+    exit(exit_code);
+}
 
 static gboolean on_destroy_timeout(void *user_data) {
     tgt_term_t* term = (tgt_term_t*)user_data;
