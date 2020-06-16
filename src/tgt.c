@@ -46,6 +46,7 @@ typedef struct tiny_term {
     vec2_t location;
     vec2_t size;
     gchar** cmd;
+    gboolean destroy_queued;
 } tgt_term_t;
 
 static gboolean parse_location_arg(
@@ -173,6 +174,14 @@ static void on_child_exited(
     gpointer user_data G_GNUC_UNUSED)
 {
     exit(WEXITSTATUS(status));
+
+static gboolean on_destroy_timeout(void *user_data) {
+    tgt_term_t* term = (tgt_term_t*)user_data;
+    if (term->destroy_queued) {
+        gtk_widget_destroy(GTK_WIDGET(term->terminal));
+    }
+
+    return FALSE;
 }
 
 static gboolean on_focus_out(
@@ -181,7 +190,19 @@ static gboolean on_focus_out(
     gpointer user_data)
 {
     tgt_term_t* term = (tgt_term_t*)user_data;
-    gtk_widget_destroy(GTK_WIDGET(term->terminal));
+    term->destroy_queued = TRUE;
+    g_timeout_add(10, on_destroy_timeout, term);
+
+    return TRUE;
+}
+
+static gboolean on_focus_in(
+    GtkWidget* widget G_GNUC_UNUSED,
+    GdkEvent* event G_GNUC_UNUSED,
+    gpointer user_data)
+{
+    tgt_term_t* term = (tgt_term_t*)user_data;
+    term->destroy_queued = FALSE;
 
     return TRUE;
 }
@@ -223,6 +244,11 @@ static void init_window(tgt_term_t* term, GtkApplication* app)
             term->window,
             "focus-out-event",
             G_CALLBACK(on_focus_out),
+            term);
+        g_signal_connect(
+            term->window,
+            "focus-in-event",
+            G_CALLBACK(on_focus_in),
             term);
     }
     GdkRectangle monitor_rect;
