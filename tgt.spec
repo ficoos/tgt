@@ -1,13 +1,13 @@
-Name: tgt
-Version: v0.5.6
+Name: {{{ git_name }}}
+Version: {{{ git_version }}}
 Release: 1%{?dist}
 Summary: A Tiny Gnome Terminal
 License: GPLv3
 
 URL: https://github.com/ficoos/tgt
-VCS: {{{ git_dir_vcs }}}
+VCS: {{{ git_vcs }}}
 
-Source: {{{ git_dir_pack }}}
+Source: {{{ git_pack }}}
 
 BuildRequires: meson
 BuildRequires: gcc
@@ -21,9 +21,7 @@ Requires: vte291
 %description
 
 %prep
-%autosetup -c
-mv -- -/* .
-rm -r -- '-'
+{{{ git_setup_macro }}}
 
 %build
 %meson
