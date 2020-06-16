@@ -1,5 +1,5 @@
 Name: tgt
-Version: v0.5.5
+Version: v0.5.6
 Release: 1%{?dist}
 Summary: A Tiny Gnome Terminal
 License: GPLv3
