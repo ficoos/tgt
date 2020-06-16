@@ -470,7 +470,7 @@ int main(int argc, char** argv)
     app = gtk_application_new(NULL, G_APPLICATION_HANDLES_COMMAND_LINE);
     g_application_set_option_context_parameter_string(
         G_APPLICATION(app),
-        "[-- COMMAND …]");
+        "[-- COMMAND…]");
     g_application_add_main_option_entries(G_APPLICATION(app), entries);
     g_signal_connect(app, "command-line", G_CALLBACK(on_command_line), &term);
     status = g_application_run(G_APPLICATION(app), argc, argv);
