@@ -100,7 +100,7 @@ static GOptionEntry entries[] = {
      &options.wrap_stdio,
      "",
      "PID"},
-    {NULL}};
+    {0}};
 #pragma GCC diagnostic pop
 
 static gboolean parse_size_arg(
@@ -180,7 +180,8 @@ static void on_child_exited(
     exit(exit_code);
 }
 
-static gboolean on_destroy_timeout(void *user_data) {
+static gboolean on_destroy_timeout(void* user_data)
+{
     tgt_term_t* term = (tgt_term_t*)user_data;
     if (term->destroy_queued) {
         gtk_widget_destroy(GTK_WIDGET(term->terminal));
@@ -354,7 +355,9 @@ static void apply_profile(tgt_term_t* term)
     }
     // cursor blink mode
     {
-        gchar* blink_mode_str = g_settings_get_string(profile, "cursor-blink-mode");
+        gchar* blink_mode_str = g_settings_get_string(
+            profile,
+            "cursor-blink-mode");
         VteCursorBlinkMode blink_mode = VTE_CURSOR_BLINK_SYSTEM;
         gtk_window_set_title(term->window, blink_mode_str);
         if (strcmp(blink_mode_str, "system") == 0) {
