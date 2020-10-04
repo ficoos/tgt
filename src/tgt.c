@@ -197,7 +197,7 @@ static gboolean on_focus_out(
 {
     tgt_term_t* term = (tgt_term_t*)user_data;
     term->destroy_queued = TRUE;
-    g_timeout_add(10, on_destroy_timeout, term);
+    g_timeout_add(100, on_destroy_timeout, term);
 
     return TRUE;
 }
